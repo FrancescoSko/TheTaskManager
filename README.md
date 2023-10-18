@@ -1,2 +1,3 @@
 # TheTaskManager
-This is one of my personal applications for portfolio
+This is one of my personal applications for portfolio actually in developing
+
