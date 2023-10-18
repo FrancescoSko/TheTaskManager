@@ -1,5 +1,6 @@
 package com.project.portfolio.TheTaskManager.controllers;
 
+import com.project.portfolio.TheTaskManager.entities.Task;
 import com.project.portfolio.TheTaskManager.entities.User;
 import com.project.portfolio.TheTaskManager.services.userServices.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,13 @@ public class UserController {
 
     @GetMapping("/get-all")
     public ResponseEntity<List<User>> getAllUsers() {
-      List<User> users = userService.getAllUsers();
-      if(users.isEmpty()){
-          return ResponseEntity.notFound().build();
-      } else {
-          return ResponseEntity.ok(users);
-      }
-  }
+        List<User> users = userService.getAllUsers();
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(users);
+        }
+    }
 
     @PostMapping("/add")
     public ResponseEntity<String> addUser(@RequestBody User user) {
@@ -39,10 +40,20 @@ public class UserController {
 
 
     @GetMapping("/get-by-id/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id){
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> optionalUser = userService.getUserById(id);
         return optionalUser.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
+    @GetMapping("/get-tasks-for-user/{userId}")
+    public ResponseEntity<List<Task>> getTasksByUserId(@PathVariable Long userId) {
+        if (!userService.getUserWithTasks(userId).isEmpty()) {
+            return ResponseEntity.ok(userService.getUserWithTasks(userId));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 
 
 }

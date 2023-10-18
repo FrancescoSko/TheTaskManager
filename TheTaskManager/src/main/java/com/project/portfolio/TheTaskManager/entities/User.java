@@ -2,6 +2,7 @@ package com.project.portfolio.TheTaskManager.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,8 +17,8 @@ public class User {
     private String password;
     private Date registrationDate;
 
-    @OneToMany(mappedBy = "user")
-    private List<Task> tasks;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Task> tasks = new ArrayList<>();
 
 
     public User() {
@@ -69,6 +70,16 @@ public class User {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+
+    public void addTask(Task task){
+         tasks.add(task);
+           task.setUser(this);
+    }
+
+    public List<Task> getTask(){
+        return tasks;
     }
 
     @Override

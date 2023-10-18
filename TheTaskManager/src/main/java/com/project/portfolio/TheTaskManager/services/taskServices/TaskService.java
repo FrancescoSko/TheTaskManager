@@ -34,6 +34,43 @@ public class TaskService {
         }
     }
 
+    public boolean addTaskToUser(Long userId, Task task){
+        Optional<User> userOptional = userService.getUserById(userId);
+        if(userOptional.isEmpty()){
+            return false;
+        }
+        userOptional.get().addTask(task);
+        tasksDAO.save(task);
+         return true;
+    }
+
+
+     public boolean updateTask(Long taskId, Task updatedTask){
+        Optional<Task> existingTaskOptional = tasksDAO.findById(taskId);
+
+        if(existingTaskOptional.isPresent()){
+            Task existingTask = existingTaskOptional.get();
+
+            existingTask.setTitle(updatedTask.getTitle());
+            existingTask.setDescription(updatedTask.getDescription());
+            existingTask.setDueDate(updatedTask.getDueDate());
+            existingTask.setCompleted(updatedTask.getCompleted());
+
+            tasksDAO.save(existingTask);
+            return true;
+        }
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 

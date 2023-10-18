@@ -1,11 +1,13 @@
 package com.project.portfolio.TheTaskManager.services.userServices;
 
+import com.project.portfolio.TheTaskManager.entities.Task;
 import com.project.portfolio.TheTaskManager.entities.User;
 import com.project.portfolio.TheTaskManager.repository.UserDAO;
 import com.project.portfolio.TheTaskManager.services.userServices.UsernameValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,16 +55,13 @@ public class UserService {
 
 
     public Optional<User> getUserById(Long id){
-        for (User user: userDAO.findAll()){
-            if(user.getId().equals(id)){
-                return Optional.of(user);
-            }
-        } return Optional.empty();
+      return userDAO.findById(id);
     }
 
-
-
-
+    public List<Task> getUserWithTasks(Long userId) {
+        Optional<User> optionalUser = userDAO.findById(userId);
+        return optionalUser.map(User::getTask).orElse(Collections.emptyList());
+    }
 
 }
 
